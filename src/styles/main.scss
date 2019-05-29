@@ -1,0 +1,14 @@
+@import "switch";
+
+body {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  height: 100vh;
+  justify-items: center;
+  font-family: sans-serif;
+  header {
+    display: grid;
+    justify-items: center;
+  }
+}
