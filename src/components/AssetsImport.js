@@ -1,0 +1,9 @@
+import "../assets/clear-day.svg";
+import "../assets/clear-night.svg";
+import "../assets/cloudy.svg";
+import "../assets/partly-cloudy-day.svg";
+import "../assets/partly-cloudy-night.svg";
+import "../assets/rain.svg";
+import "../assets/sleet.svg";
+import "../assets/thunderstorm.svg";
+import "../assets/wind.svg";

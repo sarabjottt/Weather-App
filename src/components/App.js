@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import Weather from "./Weather";
+import "./AssetsImport";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // isLoading: false,
+      isLoading: false,
       // wData: null,
       temperature: null,
       apparentTemperature: null,
@@ -39,7 +40,7 @@ export default class App extends Component {
           })
           .then(data => {
             this.setState({
-              // isLoading: true,
+              isLoading: true,
               // wData: data,
               temperature: data.currently.temperature,
               apparentTemperature: data.currently.apparentTemperature,
@@ -57,6 +58,17 @@ export default class App extends Component {
   }
 
   render() {
-    return <Weather props={this.state} />;
+    if (!this.state.isLoading) {
+      return (
+        <div className='loading'>
+          <div className='card'>
+            <h1>Weather Forcast</h1>
+            <h2>Allow location to access.</h2>
+          </div>
+        </div>
+      );
+    } else {
+      return <Weather props={this.state} />;
+    }
   }
 }

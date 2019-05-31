@@ -1,14 +1,195 @@
-@import "switch";
+$black: #2b2b2b;
+$title: 4em;
+$heading: 4em;
+$sub-heading: 2em;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
+  font-family: Roboto, sans-serif;
+  animation: fadeIn 1.5s;
+  color: $black;
+  user-select: none;
+  font-size: 10px;
+  overflow: hidden;
+}
+.main {
+  animation: fadeIn 1.5s;
+}
+.grid-container {
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.clear-day {
+  background-image: linear-gradient(180deg, #ffecb1 0%, #ffa991 100%);
+}
+.clear-night {
+  color: white;
+  background-image: linear-gradient(0deg, #1b2e35 0%, #00203c 100%);
+}
+.rain {
+  background-image: linear-gradient(180deg, #38e6f1 0%, #0089ff 100%);
+  color: white;
+}
+.snow {
+  background-image: linear-gradient(190deg, #89f7fe 0%, #66a6ff 100%);
+}
+.sleet {
+  background-image: linear-gradient(180deg, #a4faff 0%, #3a8bd0 100%);
+}
+.wind {
+  background-image: linear-gradient(190deg, #dcdcdc 0%, #f1f1f1 100%);
+}
+.fog {
+  background-image: linear-gradient(190deg, #89f7fe 0%, #66a6ff 100%);
+}
+.cloudy {
+  background-image: linear-gradient(45deg, #82bfdc 0%, #e4efe9 100%);
+}
+.partly-cloudy-day {
+  background-image: linear-gradient(190deg, #89f7fe 0%, #66a6ff 100%);
+  color: $black;
+}
+.partly-cloudy-night {
+  background-image: linear-gradient(0deg, #007680 0%, #4e1396 100%);
+  color: white;
+}
+.thunderstorm {
+  background-image: linear-gradient(0deg, #ff2da1 0%, #dbbfff 100%);
+  color: white;
+}
+
+.grid-box {
   display: grid;
   justify-content: center;
   align-content: center;
-  height: 100vh;
-  justify-items: center;
-  font-family: sans-serif;
-  header {
-    display: grid;
-    justify-items: center;
+}
+.flex {
+  display: flex;
+}
+.bold {
+  font-weight: 700;
+}
+.weather-head {
+  font-size: $sub-heading;
+  align-items: center;
+  .weather-icon {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 200px;
+    height: 200px;
+    margin: 0 4em;
+  }
+  .clear-day {
+    background-image: url(/assets/clear-day.svg);
+  }
+  .clear-night {
+    background-image: url(/assets/clear-night.svg);
+  }
+  .rain {
+    background-image: url(/assets/rain.svg);
+  }
+  // .snow {
+  //   background-image: url(/assets/snow.svg);
+  // }
+  .sleet {
+    background-image: url(/assets/sleet.svg);
+  }
+  .wind {
+    background-image: url(/assets/wind.svg);
+  }
+  // .fog {
+  //   background-image: url(/assets/fog.svg);
+  // }
+  .cloudy {
+    background-image: url(/assets/cloudy.svg);
+  }
+  .partly-cloudy-day {
+    background-image: url(/assets/partly-cloudy-day.svg);
+  }
+  .partly-cloudy-night {
+    background-image: url(/assets/partly-cloudy-night.svg);
+  }
+  .thunderstorm {
+    background-image: url(/assets/thunderstorm.svg);
+  }
+  .weather-text {
+    .weather-text-temp {
+      font-size: $title;
+      font-weight: 700;
+    }
+    span {
+      padding: 10px;
+    }
+    .weather-text-feels {
+      padding: 10px;
+    }
   }
 }
+.detail-head {
+  .detail-head-text {
+    padding: 1em 0;
+    font-size: $heading;
+  }
+  .detail-content {
+    font-size: $sub-heading;
+    list-style-type: none;
+    padding: 10px;
+    justify-content: center;
+    .weather-label-misc {
+      padding: 10px;
+      text-align: right;
+    }
+    .weather-value-misc {
+      padding: 10px;
+    }
+  }
+}
+.loading {
+  font-family: Roboto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: linear-gradient(180deg, #5f63ff 0%, #e88cff 100%);
+  animation: fadeIn 0.5s;
+  flex-direction: column;
+  .card {
+    width: 80%;
+    height: 160px;
+    text-align: center;
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.44);
+  }
+  h1 {
+    margin-bottom: 10px;
+    font-weight: 300;
+  }
+  h2 {
+    font-weight: 300;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@import "switch";
+@import "media";
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,700&display=swap");

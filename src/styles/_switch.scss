@@ -1,5 +1,7 @@
 .switch-toggle {
-  position: relative;
+  position: absolute;
+  right: 50px;
+  top: 50px;
   display: inline-block;
   width: 60px;
   height: 34px;
@@ -16,10 +18,10 @@
   right: 0;
   bottom: 0;
   border-radius: 34px;
-  background-color: #ccc;
+  background-color: #a7a7a7;
   -webkit-transition: 0.4s;
   transition: 0.4s;
-  clip: rect(0px, 60px, 35px, 0px);
+  box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.32);
 }
 
 .slider-round {
@@ -32,22 +34,6 @@
   background-color: white;
   -webkit-transition: 0.4s;
   transition: 0.4s;
-  &::before {
-    content: "C";
-    position: absolute;
-    left: -18px;
-    top: 6px;
-    font-size: 0.8em;
-    color: #b8b8b8;
-  }
-  &::after {
-    color: #b8b8b8;
-    font-size: 0.8em;
-    content: "F";
-    position: absolute;
-    top: 6px;
-    right: -18px;
-  }
 }
 
 input:checked + .slider > .slider-round {
@@ -66,4 +52,10 @@ input:checked + .slider > .slider-round {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+// ------------------------------------
+
+.switch-toggle-mobile {
+  display: none;
 }

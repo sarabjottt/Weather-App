@@ -1,5 +1,5 @@
 {
-  "name": "Weather Forcast",
+  "name": "weather-forcast",
   "version": "1.0.0",
   "description": "Weather Forcast App",
   "main": "index.js",
