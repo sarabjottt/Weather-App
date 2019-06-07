@@ -62,7 +62,7 @@ export default class App extends Component {
       return (
         <div className='loading'>
           <div className='card'>
-            <h1>Weather Forcast</h1>
+            <h1>Weather Forecast</h1>
             <h2>Allow location to access.</h2>
           </div>
         </div>

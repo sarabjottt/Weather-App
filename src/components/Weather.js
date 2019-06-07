@@ -61,7 +61,7 @@ export default class Weather extends Component {
                   <li>Rain</li>
                 </div>
                 <div className='weather-value-misc bold'>
-                  <li>{props.humidity * 100}%</li>
+                  <li>{Math.floor(props.humidity * 100)}%</li>
                   <li>{Math.floor(props.visibility * 1.609)} km</li>
                   <li>{Math.floor(props.windSpeed * 1.609)} k/h</li>
                   <li>{Math.floor(props.precipProbability * 100)}%</li>
