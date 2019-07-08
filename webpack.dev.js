@@ -32,7 +32,7 @@ module.exports = merge(common, {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      template: "./index.html"
+      template: "./public/index.html"
     })
   ]
 });

@@ -1,4 +1,5 @@
 const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: ["./src/index.js", "./src/styles/main.scss"],
@@ -25,5 +26,10 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  plugins: [
+    new CopyPlugin([
+      { from: "public", to: "", toType: "dir", ignore: ["*.html"] }
+    ])
+  ]
 };
