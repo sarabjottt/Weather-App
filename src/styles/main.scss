@@ -106,9 +106,9 @@ body {
   .wind {
     background-image: url(/assets/wind.svg);
   }
-  // .fog {
-  //   background-image: url(/assets/fog.svg);
-  // }
+  .fog {
+    background-image: url(/assets/wind.svg);
+  }
   .cloudy {
     background-image: url(/assets/cloudy.svg);
   }
@@ -145,6 +145,7 @@ body {
     list-style-type: none;
     padding: 10px;
     justify-content: center;
+    line-height: 1.3;
     .weather-label-misc {
       padding: 10px;
       text-align: right;
@@ -160,19 +161,19 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: linear-gradient(180deg, #5f63ff 0%, #e88cff 100%);
   animation: fadeIn 0.5s;
   flex-direction: column;
+  background-image: linear-gradient(120deg, #a1fdfd40 0%, #5fffda36 100%);
   .card {
-    width: 80%;
+    width: 30%;
     height: 160px;
     text-align: center;
-    background: white;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.44);
+    border: 3px solid #42b7c3;
+    min-width: 400px;
   }
   h1 {
     margin-bottom: 10px;
