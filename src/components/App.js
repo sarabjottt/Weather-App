@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import Weather from "./Weather";
-import "./AssetsImport";
+import React, { Component } from 'react';
+import Weather from './Weather';
+import './AssetsImport';
 
 export default class App extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class App extends Component {
       precipProbability: null,
       precipType: null,
       visibility: null,
-      windSpeed: null
+      windSpeed: null,
     };
   }
 
@@ -25,19 +25,18 @@ export default class App extends Component {
   }
 
   fetchWeather() {
-    let long, lat;
+    let long;
+    let lat;
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         long = position.coords.longitude;
         lat = position.coords.latitude;
 
-        const proxy = "https://cors-anywhere.herokuapp.com/";
-        const api = `${proxy}https://api.darksky.net/forecast/7e9f07d026e672219dff217176d64c0d/${lat},${long}?exclude=minutely,hourly,daily,alert,flags`;
+        const proxy = 'https://cors-anywhere.herokuapp.com/';
+        const api = `https://api.darksky.net/forecast/${process.env.DARKSKY_API}/${lat},${long}?exclude=minutely,hourly,daily,alert,flags`;
 
         fetch(api)
-          .then(response => {
-            return response.json();
-          })
+          .then(response => response.json())
           .then(data => {
             this.setState({
               isLoading: true,
@@ -50,7 +49,7 @@ export default class App extends Component {
               precipProbability: data.currently.precipProbability,
               precipType: data.currently.precipType,
               visibility: data.currently.visibility,
-              windSpeed: data.currently.windSpeed
+              windSpeed: data.currently.windSpeed,
             });
           });
       });
@@ -60,15 +59,14 @@ export default class App extends Component {
   render() {
     if (!this.state.isLoading) {
       return (
-        <div className='loading'>
-          <div className='card'>
+        <div className="loading">
+          <div className="card">
             <h1>Weather Forecast</h1>
             <h2>Allow location to access.</h2>
           </div>
         </div>
       );
-    } else {
-      return <Weather props={this.state} />;
     }
+    return <Weather props={this.state} />;
   }
 }

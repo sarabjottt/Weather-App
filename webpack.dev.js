@@ -1,15 +1,14 @@
-const webpack = require("webpack");
-const merge = require("webpack-merge");
-const common = require("./webpack.common.js");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
-  mode: "development",
-  devtool: "inline-source-map",
+  mode: 'development',
+  devtool: 'inline-source-map',
   devServer: {
     port: 5000,
-    contentBase: "./dist",
-    hot: true
+    contentBase: './dist',
+    hot: true,
   },
   module: {
     rules: [
@@ -17,22 +16,17 @@ module.exports = merge(common, {
         test: /\.scss$/,
         use: [
           {
-            loader: "style-loader"
+            loader: 'style-loader',
           },
           {
-            loader: "css-loader"
+            loader: 'css-loader',
           },
           {
-            loader: "sass-loader"
-          }
-        ]
-      }
-    ]
+            loader: 'sass-loader',
+          },
+        ],
+      },
+    ],
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({
-      template: "./public/index.html"
-    })
-  ]
+  plugins: [new webpack.HotModuleReplacementPlugin()],
 });
