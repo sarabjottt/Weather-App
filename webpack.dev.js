@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const Dotenv = require('dotenv-webpack');
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
@@ -29,5 +28,5 @@ module.exports = merge(common, {
       },
     ],
   },
-  plugins: [new webpack.HotModuleReplacementPlugin(), new Dotenv()],
+  plugins: [new webpack.HotModuleReplacementPlugin()],
 });
