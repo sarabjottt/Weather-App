@@ -33,7 +33,7 @@ export default class App extends Component {
         lat = position.coords.latitude;
 
         const proxy = 'https://cors-anywhere.herokuapp.com/';
-        const api = `https://api.darksky.net/forecast/${process.env.DARKSKY_API}/${lat},${long}?exclude=minutely,hourly,daily,alert,flags`;
+        const api = `${proxy}https://api.darksky.net/forecast/${process.env.DARKSKY_API}/${lat},${long}?exclude=minutely,hourly,daily,alert,flags`;
 
         fetch(api)
           .then(response => response.json())
