@@ -17,10 +17,7 @@ export default class App extends Component {
       precipType: null,
       visibility: null,
       windSpeed: null,
-<<<<<<< HEAD
-=======
       location: null,
->>>>>>> 7fab2ab7a623f34674d96718ce9f5a4017807035
     };
   }
 
@@ -29,22 +26,12 @@ export default class App extends Component {
   }
 
   fetchWeather() {
-<<<<<<< HEAD
-    let long;
-    let lat;
-=======
->>>>>>> 7fab2ab7a623f34674d96718ce9f5a4017807035
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         const long = position.coords.longitude;
         const lat = position.coords.latitude;
 
-<<<<<<< HEAD
-        const proxy = 'https://cors-anywhere.herokuapp.com/';
-        const api = `${proxy}https://api.darksky.net/forecast/${process.env.DARKSKY_API}/${lat},${long}?exclude=minutely,hourly,daily,alert,flags`;
-=======
         const api = `/.netlify/functions/weatherGeo?lat=${lat}&long=${long}`;
->>>>>>> 7fab2ab7a623f34674d96718ce9f5a4017807035
 
         fetch(api)
           .then(response => response.json())
@@ -56,17 +43,6 @@ export default class App extends Component {
             this.setState({
               isLoading: true,
               // wData: data,
-<<<<<<< HEAD
-              temperature: data.currently.temperature,
-              apparentTemperature: data.currently.apparentTemperature,
-              summary: data.currently.summary,
-              humidity: data.currently.humidity,
-              icon: data.currently.icon,
-              precipProbability: data.currently.precipProbability,
-              precipType: data.currently.precipType,
-              visibility: data.currently.visibility,
-              windSpeed: data.currently.windSpeed,
-=======
               temperature: currently.temperature,
               apparentTemperature: currently.apparentTemperature,
               summary: currently.summary,
@@ -77,7 +53,6 @@ export default class App extends Component {
               visibility: currently.visibility,
               windSpeed: currently.windSpeed,
               location: data.locationData,
->>>>>>> 7fab2ab7a623f34674d96718ce9f5a4017807035
             });
           });
       });
