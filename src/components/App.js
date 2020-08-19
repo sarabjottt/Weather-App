@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import Weather from "./Weather";
-import "./AssetsImport";
+import React, { Component } from 'react';
+import Weather from './Weather';
+import './AssetsImport';
 
 export default class App extends Component {
   constructor(props) {
@@ -16,7 +16,8 @@ export default class App extends Component {
       precipProbability: null,
       precipType: null,
       visibility: null,
-      windSpeed: null
+      windSpeed: null,
+      location: null,
     };
   }
 
@@ -25,32 +26,33 @@ export default class App extends Component {
   }
 
   fetchWeather() {
-    let long, lat;
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
-        long = position.coords.longitude;
-        lat = position.coords.latitude;
+        const long = position.coords.longitude;
+        const lat = position.coords.latitude;
 
-        const proxy = "https://cors-anywhere.herokuapp.com/";
-        const api = `${proxy}https://api.darksky.net/forecast/7e9f07d026e672219dff217176d64c0d/${lat},${long}?exclude=minutely,hourly,daily,alert,flags`;
+        const api = `/.netlify/functions/weatherGeo?lat=${lat}&long=${long}`;
 
         fetch(api)
-          .then(response => {
-            return response.json();
-          })
+          .then(response => response.json())
           .then(data => {
+            const {
+              weatherData: { currently },
+            } = data;
+            console.log(data.locationData);
             this.setState({
               isLoading: true,
               // wData: data,
-              temperature: data.currently.temperature,
-              apparentTemperature: data.currently.apparentTemperature,
-              summary: data.currently.summary,
-              humidity: data.currently.humidity,
-              icon: data.currently.icon,
-              precipProbability: data.currently.precipProbability,
-              precipType: data.currently.precipType,
-              visibility: data.currently.visibility,
-              windSpeed: data.currently.windSpeed
+              temperature: currently.temperature,
+              apparentTemperature: currently.apparentTemperature,
+              summary: currently.summary,
+              humidity: currently.humidity,
+              icon: currently.icon,
+              precipProbability: currently.precipProbability,
+              precipType: currently.precipType,
+              visibility: currently.visibility,
+              windSpeed: currently.windSpeed,
+              location: data.locationData,
             });
           });
       });
@@ -60,15 +62,14 @@ export default class App extends Component {
   render() {
     if (!this.state.isLoading) {
       return (
-        <div className='loading'>
-          <div className='card'>
+        <div className="loading">
+          <div className="card">
             <h1>Weather Forecast</h1>
             <h2>Allow location to access.</h2>
           </div>
         </div>
       );
-    } else {
-      return <Weather props={this.state} />;
     }
+    return <Weather props={this.state} />;
   }
 }
