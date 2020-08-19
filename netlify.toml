@@ -1,2 +1,12 @@
 [build]
+<<<<<<< HEAD
 functions = "functions/"
+=======
+    command = "npm run build"
+    functions = "functions/"
+    publish = "dist/"
+[dev]
+    command = "npm run start"
+    targetPort = 5000
+    framework = "#custom"
+>>>>>>> 7fab2ab7a623f34674d96718ce9f5a4017807035
