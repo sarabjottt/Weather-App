@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { GlobalState } from './GlobalState';
 import Weather from './Weather';
 import './AssetsImport';
+import { getLS, setLS, clearCache } from './Helper';
 
 export default function App() {
-  const [weather, setWeather] = useState(null);
-  const [location, setLocation] = useState(null);
-  const [searchValue, setSearchValue] = useState('');
+  const [weather, setWeather] = useState(getLS('weatherData') || null);
 
   function fetchWeather(lat, long) {
     const api = `/.netlify/functions/weatherGeo?lat=${lat}&long=${long}`;
@@ -15,59 +15,31 @@ export default function App() {
       .then(res => res.json())
       .then(data => {
         console.log('Data:', data);
-        const { weatherData, locationData } = data;
-        setLocation(locationData);
-        setWeather(weatherData);
+        setWeather(data);
+        setLS('weatherData', data);
+        setLS('lastCached', Date.now());
       });
   }
 
   useEffect(() => {
-    fetchWeather();
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const long = position.coords.longitude;
-          const lat = position.coords.latitude;
-          console.log(position);
-          fetchWeather(lat, long);
-        },
-        error => {
-          console.log(error);
-        }
-      );
+    clearCache();
+    if (!getLS('weatherData')) {
+      fetchWeather();
     }
   }, []);
-  function handleSearch(e) {
-    e.preventDefault();
-    if (searchValue.length < 3) {
-      console.log('Enter at least 3 charecters');
-    } else {
-      console.log(searchValue);
-    }
-  }
-  return (
-    <div>
-      <span>Success</span>
-      <form onSubmit={handleSearch}>
-        <input
-          type="search"
-          name="place"
-          onChange={e => setSearchValue(e.target.value)}
-        />
-        <input type="submit" value="Submit" />
-      </form>
-      <button onClick={() => console.log('locating')}>Locate</button>
+
+  return weather ? (
+    <GlobalState.Provider value={{ weather, setWeather }}>
+      <Weather />
+    </GlobalState.Provider>
+  ) : (
+    <div className="loading">
+      <div className="card">
+        <h1>Weather Forecast</h1>
+        <h2>Allow location to access.</h2>
+      </div>
     </div>
   );
-  //  : (
-  //   // <Weather weather={weather} location={location} />
-  //   <div className="loading">
-  //     <div className="card">
-  //       <h1>Weather Forecast</h1>
-  //       <h2>Allow location to access.</h2>
-  //     </div>
-  //   </div>
-  // );
 }
 
 // export default class App extends Component {

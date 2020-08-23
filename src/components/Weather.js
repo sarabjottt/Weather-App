@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { GlobalState } from './GlobalState';
 import { toCelsius } from './Helper';
+import Switch from './UI/Switch';
+import Search from './Search';
 
-export default function Weather(props) {
+export default function Weather() {
   const [isCelsius, setIsCelsius] = useState(true);
   const {
-    weather: { currently },
-  } = props;
+    weather,
+    weather: {
+      weatherData: { currently },
+    },
+  } = useContext(GlobalState);
+
   return (
     <div className="section">
-      <label htmlFor="checkbox" className="switch-toggle">
-        <input onClick={() => setIsCelsius(!isCelsius)} type="checkbox" />
-        <span className="slider">
-          <span className="slider-round">
-            <span className="slider-text">{isCelsius ? 'C' : 'F'}</span>
-          </span>
-        </span>
-      </label>
-
+      <Search />
+      <Switch isOn={isCelsius} handleToggle={() => setIsCelsius(!isCelsius)} />
       <div className={`grid-container ${currently.icon}`}>
         <div className="grid-box">
           <div className="weather-head flex">
@@ -38,7 +38,11 @@ export default function Weather(props) {
                   °
                 </span>
               </div>
-              <span>{props.location.suburb || props.location.city}</span>
+              <span>
+                {weather.locationData.suburb ||
+                  weather.locationData.city ||
+                  weather.locationData.fullAddress}
+              </span>
             </div>
           </div>
         </div>
@@ -59,23 +63,14 @@ export default function Weather(props) {
                 <li>{Math.floor(currently.precipProbability * 100)}%</li>
               </div>
             </div>
-            <label className="switch-toggle-mobile">
-              <input
-                onClick={() => setIsCelsius({ isCelsius: !isCelsius })}
-                type="checkbox"
-              />
-              <span className="slider">
-                <span className="slider-round">
-                  <span className="slider-text">{isCelsius ? 'C' : 'F'}</span>
-                </span>
-              </span>
-            </label>
+            <Switch
+              isMobile
+              isOn={isCelsius}
+              handleToggle={() => setIsCelsius(!isCelsius)}
+            />
           </div>
         </div>
       </div>
     </div>
   );
 }
-Weather.propTypes = {
-  weather: PropTypes.object.isRequired,
-};

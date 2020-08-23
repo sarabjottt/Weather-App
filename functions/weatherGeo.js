@@ -1,12 +1,12 @@
 require('isomorphic-fetch');
 
 async function getWeather(lat, long) {
-  // const weatherAPI = `https://api.darksky.net/forecast/${process.env.DARKSKY_API}/${lat},${long}?exclude=minutely,hourly,daily,alerts,flags`;
-  // const weatherData = await fetch(weatherAPI)
-  //   .then(res => res.json())
-  //   .catch(err => err.name);
-  // return weatherData;
-  return 'Sucess Test';
+  const weatherAPI = `https://api.darksky.net/forecast/${process.env.DARKSKY_API}/${lat},${long}?exclude=minutely,hourly,daily,alerts,flags`;
+  const weatherData = await fetch(weatherAPI)
+    .then(res => res.json())
+    .catch(err => err.name);
+  return weatherData;
+  // return {"latitude":-37.81,"longitude":144.9644,"timezone":"Australia/Melbourne","currently":{"time":1598153529,"summary":"Mostly Cloudy","icon":"partly-cloudy-day","precipIntensity":0.0167,"precipProbability":0.14,"precipType":"rain","temperature":53.74,"apparentTemperature":53.74,"dewPoint":39.89,"humidity":0.59,"pressure":1013.3,"windSpeed":16.93,"windGust":26.05,"windBearing":218,"cloudCover":0.84,"uvIndex":2,"visibility":10,"ozone":348.1},"offset":10}
 }
 
 async function getGeocode(lat, long) {
@@ -20,7 +20,7 @@ async function getGeocode(lat, long) {
     const trimData = {
       suburb: data.components.suburb,
       city: data.components.city,
-      fullAddress: data.formatted,
+      fullAddress: splitCity(data.formatted),
     };
     return trimData;
   } catch (error) {
@@ -47,11 +47,14 @@ async function getSearchData(query) {
     locationData: {
       suburb: data.components.suburb,
       city: data.components.city,
-      fullAddress: data.formatted,
+      fullAddress: splitCity(data.formatted),
     },
   };
 }
-
+function splitCity(string) {
+  const newString = string.split(',', 1).toString();
+  return newString;
+}
 exports.handler = async (event, context) => {
   const { lat, long } = event.queryStringParameters;
   const { region } = event.queryStringParameters;
