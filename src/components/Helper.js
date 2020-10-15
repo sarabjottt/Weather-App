@@ -1,5 +1,5 @@
 export function toCelsius(ferenheit) {
-  return Math.floor(((ferenheit - 32) * 5) / 9);
+  return Math.round(((ferenheit - 32) * 5) / 9);
 }
 export function setLS(key, data) {
   const dataToSet = JSON.stringify(data);

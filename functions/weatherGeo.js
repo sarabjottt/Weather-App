@@ -1,7 +1,7 @@
 require('isomorphic-fetch');
 
 async function getWeather(lat, long) {
-  const weatherAPI = `https://api.darksky.net/forecast/${process.env.DARKSKY_API}/${lat},${long}?exclude=minutely,hourly,daily,alerts,flags`;
+  const weatherAPI = `https://api.darksky.net/forecast/${process.env.DARKSKY_API}/${lat},${long}?exclude=minutely,daily,alerts,flags`;
   const weatherData = await fetch(weatherAPI)
     .then(res => res.json())
     .catch(err => err.name);
@@ -20,6 +20,8 @@ async function getGeocode(lat, long) {
     const trimData = {
       suburb: data.components.suburb,
       city: data.components.city,
+      stateCode: data.components.state_code,
+      countryCode: data.components.country_code.toUpperCase(),
       fullAddress: splitCity(data.formatted),
     };
     return trimData;
@@ -28,9 +30,9 @@ async function getGeocode(lat, long) {
   }
 }
 
-async function getRegion() {
+async function getRegion(clientIP) {
   const { city, latitude: lat, longitude: long } = await fetch(
-    'https://freegeoip.app/json/'
+    `https://freegeoip.app/json/${clientIP}`
   ).then(res => res.json());
   const weatherData = await getWeather(lat, long);
   return { weatherData, locationData: { city } };
@@ -47,6 +49,8 @@ async function getSearchData(query) {
     locationData: {
       suburb: data.components.suburb,
       city: data.components.city,
+      stateCode: data.components.state_code,
+      countryCode: data.components.country_code.toUpperCase(),
       fullAddress: splitCity(data.formatted),
     },
   };
@@ -59,6 +63,7 @@ exports.handler = async (event, context) => {
   const { lat, long } = event.queryStringParameters;
   const { region } = event.queryStringParameters;
   const { search } = event.queryStringParameters;
+  const clientIP = event.headers['client-ip'];
 
   if (search) {
     try {
@@ -79,7 +84,7 @@ exports.handler = async (event, context) => {
   }
   if (region === 'true') {
     try {
-      const regionData = await getRegion();
+      const regionData = await getRegion(clientIP);
       return {
         statusCode: 200,
         headers: {

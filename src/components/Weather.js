@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
-import PropTypes from 'prop-types';
 import { GlobalState } from './GlobalState';
 import { toCelsius } from './Helper';
 import Switch from './UI/Switch';
 import Search from './Search';
+import Chart from './UI/Chart';
 
 export default function Weather() {
   const [isCelsius, setIsCelsius] = useState(true);
@@ -17,6 +17,7 @@ export default function Weather() {
   return (
     <div className="section">
       <Search />
+      <Chart isCelsius={isCelsius} />
       <Switch isOn={isCelsius} handleToggle={() => setIsCelsius(!isCelsius)} />
       <div className={`grid-container ${currently.icon}`}>
         <div className="grid-box">
@@ -26,7 +27,7 @@ export default function Weather() {
               <div className="weather-text-temp bold">
                 {isCelsius
                   ? toCelsius(currently.temperature)
-                  : Math.floor(currently.temperature)}
+                  : Math.round(currently.temperature)}
                 <span className="degree-icon">°</span>
               </div>
               <div className="weather-text-feels">
@@ -34,15 +35,22 @@ export default function Weather() {
                 <span className="bold">
                   {isCelsius
                     ? toCelsius(currently.apparentTemperature)
-                    : Math.floor(currently.apparentTemperature)}
+                    : Math.round(currently.apparentTemperature)}
                   °
                 </span>
               </div>
+              {/* temp */}
               <span>
                 {weather.locationData.suburb ||
                   weather.locationData.city ||
                   weather.locationData.fullAddress}
+                ,
+                <span>
+                  {weather.locationData.stateCode ||
+                    weather.locationData.countryCode}
+                </span>
               </span>
+              {/* temp */}
             </div>
           </div>
         </div>
@@ -57,10 +65,10 @@ export default function Weather() {
                 <li>Rain</li>
               </div>
               <div className="weather-value-misc bold">
-                <li>{Math.floor(currently.humidity * 100)}%</li>
-                <li>{Math.floor(currently.visibility * 1.609)} km</li>
-                <li>{Math.floor(currently.windSpeed * 1.609)} k/h</li>
-                <li>{Math.floor(currently.precipProbability * 100)}%</li>
+                <li>{Math.round(currently.humidity * 100)}%</li>
+                <li>{Math.round(currently.visibility * 1.609)} km</li>
+                <li>{Math.round(currently.windSpeed * 1.609)} k/h</li>
+                <li>{Math.round(currently.precipProbability * 100)}%</li>
               </div>
             </div>
             <Switch
