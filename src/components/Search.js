@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { GlobalState } from './GlobalState';
-import { setLS } from './Helper';
+import { getLS, setLS } from './Helper';
 
 export default function Search() {
   const { setWeather } = useContext(GlobalState);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(getLS('searchQuery') || '');
   const [isLoading, setIsLoading] = useState(false);
 
   function fetchWeather(lat, long, query) {
@@ -17,11 +17,17 @@ export default function Search() {
       .then(res => res.json())
       .then(data => {
         console.log('Data:', data);
+        const formatQuery = `${data.locationData.suburb ||
+          data.locationData.fullAddress}, ${data.locationData.stateCode ||
+          data.locationData.countryCode}`;
         setWeather(data);
-        setSearchQuery(
-          `${data.locationData.fullAddress}, ${data.locationData.countryCode}`
-        );
+        setSearchQuery(formatQuery);
         setLS('weatherData', data);
+        setLS('searchQuery', formatQuery);
+        setLS('lastCords', {
+          lat: data.weatherData.latitude,
+          long: data.weatherData.longitude,
+        });
         setLS('lastCached', Date.now());
         setIsLoading(false);
       });
@@ -29,10 +35,10 @@ export default function Search() {
 
   function handleSearch(e) {
     e.preventDefault();
-    if (!searchQuery.length < 3) {
-      fetchWeather(null, null, searchQuery);
-    } else {
+    if (searchQuery.length < 3) {
       console.log('Enter at least 3 charecters');
+    } else {
+      fetchWeather(null, null, searchQuery);
     }
   }
 
@@ -64,7 +70,7 @@ export default function Search() {
         />
         <input disabled={isLoading} type="submit" value="Submit" />
       </form>
-      <button onClick={handleLocation}>Locate</button>
+      <button onClick={handleLocation}>📍</button>
     </>
   );
 }

@@ -4,9 +4,9 @@ import { AreaChart, Area, XAxis, LabelList, YAxis } from 'recharts';
 import { GlobalState } from '../GlobalState';
 import { toCelsius } from '../Helper';
 
-export default function Chart({ isCelsius }) {
+export default function Chart() {
   const [showRain, setShowRain] = useState(false);
-  const { weather, theme } = useContext(GlobalState);
+  const { isFern, weather, theme } = useContext(GlobalState);
   const chartData = weather.weatherData.hourly.data
     .map(e => ({
       tempCel: toCelsius(e.temperature),
@@ -18,7 +18,7 @@ export default function Chart({ isCelsius }) {
       rain: Math.round(e.precipProbability * 100),
     }))
     .slice(0, 12);
-
+  console.log(theme);
   function LabelForRain({ x, y, value }) {
     return (
       <text
@@ -43,7 +43,6 @@ export default function Chart({ isCelsius }) {
         margin={{ top: 50, right: 20, left: 20, bottom: 6 }}>
         {!showRain ? (
           <Area
-            className="customClass"
             type="monotone"
             dataKey="tempCel"
             stroke="#FFA000"
@@ -52,14 +51,14 @@ export default function Chart({ isCelsius }) {
             fillOpacity={1}>
             <LabelList
               fill={theme.font}
-              dataKey={isCelsius ? 'tempCel' : 'tempFer'}
+              dataKey={!isFern ? 'tempCel' : 'tempFer'}
               offset={10}
               position="top"
             />
           </Area>
         ) : (
           <Area
-            type="monotone"
+            type="step"
             fill="#6bbfff"
             fillOpacity={1}
             strokeWidth="0"

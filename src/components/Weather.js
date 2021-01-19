@@ -1,14 +1,15 @@
 import React, { useState, useContext } from 'react';
 import { GlobalState } from './GlobalState';
-import { toCelsius } from './Helper';
+import { getLS, setLS, toCelsius } from './Helper';
 import Switch from './UI/Switch';
 import Search from './Search';
 import Chart from './UI/Chart';
 
 export default function Weather() {
-  const [isCelsius, setIsCelsius] = useState(true);
   const {
     weather,
+    isFern,
+    setIsFern,
     weather: {
       weatherData: { currently },
     },
@@ -17,40 +18,31 @@ export default function Weather() {
   return (
     <div className="section">
       <Search />
-      <Chart isCelsius={isCelsius} />
-      <Switch isOn={isCelsius} handleToggle={() => setIsCelsius(!isCelsius)} />
+      <Chart />
+      <Switch
+        isOn={!isFern}
+        handleToggle={() => (setIsFern(!isFern), setLS('isFern', !isFern))}
+      />
       <div className={`grid-container ${currently.icon}`}>
         <div className="grid-box">
           <div className="weather-head flex">
             <div className={`weather-icon ${currently.icon}`} />
             <div className="weather-text">
               <div className="weather-text-temp bold">
-                {isCelsius
-                  ? toCelsius(currently.temperature)
-                  : Math.round(currently.temperature)}
+                {isFern
+                  ? Math.round(currently.temperature)
+                  : toCelsius(currently.temperature)}
                 <span className="degree-icon">°</span>
               </div>
               <div className="weather-text-feels">
                 Feels like
                 <span className="bold">
-                  {isCelsius
-                    ? toCelsius(currently.apparentTemperature)
-                    : Math.round(currently.apparentTemperature)}
+                  {isFern
+                    ? Math.round(currently.apparentTemperature)
+                    : toCelsius(currently.apparentTemperature)}
                   °
                 </span>
               </div>
-              {/* temp */}
-              <span>
-                {weather.locationData.suburb ||
-                  weather.locationData.city ||
-                  weather.locationData.fullAddress}
-                ,
-                <span>
-                  {weather.locationData.stateCode ||
-                    weather.locationData.countryCode}
-                </span>
-              </span>
-              {/* temp */}
             </div>
           </div>
         </div>
@@ -73,8 +65,8 @@ export default function Weather() {
             </div>
             <Switch
               isMobile
-              isOn={isCelsius}
-              handleToggle={() => setIsCelsius(!isCelsius)}
+              isOn={isFern}
+              handleToggle={() => setIsFern(!isFern)}
             />
           </div>
         </div>

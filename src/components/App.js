@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { GlobalState, themes } from './GlobalState';
 import Weather from './Weather';
 import './AssetsImport';
-import { getLS, setLS, clearCache } from './Helper';
+import { getLS, setLS } from './Helper';
 
 export default function App() {
+  const [isFern, setIsFern] = useState(getLS('isFern') || false);
   const [weather, setWeather] = useState(getLS('weatherData') || null);
   const [theme, setTheme] = useState(themes.light);
 
@@ -12,7 +13,7 @@ export default function App() {
     const api = `/.netlify/functions/weatherGeo?lat=${lat}&long=${long}`;
     const apiRegion = `/.netlify/functions/weatherGeo?region=true`;
     console.log('function called...');
-    fetch(!lat && !long ? apiRegion : api)
+    fetch(!lat ? apiRegion : api)
       .then(res => res.json())
       .then(data => {
         console.log('Data:', data);
@@ -23,9 +24,15 @@ export default function App() {
   }
 
   useEffect(() => {
-    clearCache();
     if (!getLS('weatherData')) {
       fetchWeather();
+    }
+    const timeSinceLastFetch = Date.now() - getLS('lastCached');
+    if (timeSinceLastFetch >= 5 * 60000) {
+      if (getLS('lastCords')) {
+        const { lat, long } = getLS('lastCords');
+        fetchWeather(lat, long);
+      }
     }
   }, []);
 
@@ -36,17 +43,18 @@ export default function App() {
       'partly-cloudy-night',
       'thunderstrome',
     ];
-    if (strings.includes(weather.weatherData.currently.icon)) {
+    if (weather && strings.includes(weather.weatherData.currently.icon)) {
       console.log('its dark time');
       setTheme(themes.dark);
     } else {
       console.log('its light time');
       setTheme(themes.light);
     }
-  }, [weather.weatherData.currently.icon]);
+  }, [weather]);
 
   return weather ? (
-    <GlobalState.Provider value={{ theme, weather, setWeather }}>
+    <GlobalState.Provider
+      value={{ theme, weather, setWeather, isFern, setIsFern }}>
       <Weather />
     </GlobalState.Provider>
   ) : (
