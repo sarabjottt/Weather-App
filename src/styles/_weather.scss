@@ -1,0 +1,67 @@
+@import "bgGradient";
+.app-wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px;
+  // TODO: min-height: XXpx;
+  @include for-mobile {
+    padding: 10px;
+  }
+}
+
+.hero-container {
+  margin: 10px 0;
+  h1 {
+    font-size: 8rem;
+    font-weight: bold;
+  }
+}
+.chart-container {
+  margin: 10px 0;
+  max-width: 500px;
+  width: 100%;
+}
+.meta-container {
+  display: flex;
+  ul {
+    li {
+      list-style-type: none;
+      font-size: 1.4rem;
+      line-height: normal;
+      letter-spacing: 1px;
+    }
+    &.meta-value {
+      margin-left: 10px;
+      font-weight: bold;
+    }
+  }
+}
+.icon-container {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  width: 30%;
+  height: 30%;
+  .weather-icon {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: left;
+    width: 100%;
+    height: 100%;
+  }
+}
+.summery-container {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  h2 {
+    font-size: 13vw;
+    opacity: 0.2;
+    line-height: 1;
+  }
+  @include for-mobile {
+  }
+}
