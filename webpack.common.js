@@ -38,8 +38,15 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
-    new CopyPlugin([
-      { from: 'public', to: '', toType: 'dir', ignore: ['*.html'] },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: 'public',
+          to: '',
+          toType: 'dir',
+          globOptions: { ignore: ['*.html'] },
+        },
+      ],
+    }),
   ],
 };

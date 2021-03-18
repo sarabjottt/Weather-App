@@ -1,72 +1,63 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import { GlobalState, themes } from './GlobalState';
 import Weather from './Weather';
 import './AssetsImport';
+import { getLS, setLS } from './Helper';
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: false,
-      // wData: null,
-      temperature: null,
-      apparentTemperature: null,
-      summary: null,
-      humidity: null,
-      icon: null,
-      precipProbability: null,
-      precipType: null,
-      visibility: null,
-      windSpeed: null,
-    };
-  }
+export default function App() {
+  const [isFern, setIsFern] = useState(getLS('isFern') || false);
+  const [weather, setWeather] = useState(getLS('weatherData') || null);
+  const [theme, setTheme] = useState(themes.light);
 
-  componentDidMount() {
-    this.fetchWeather();
-  }
-
-  fetchWeather() {
-    let long;
-    let lat;
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        long = position.coords.longitude;
-        lat = position.coords.latitude;
-
-        const proxy = 'https://cors-anywhere.herokuapp.com/';
-        const api = `${proxy}https://api.darksky.net/forecast/${process.env.DARKSKY_API}/${lat},${long}?exclude=minutely,hourly,daily,alert,flags`;
-
-        fetch(api)
-          .then(response => response.json())
-          .then(data => {
-            this.setState({
-              isLoading: true,
-              // wData: data,
-              temperature: data.currently.temperature,
-              apparentTemperature: data.currently.apparentTemperature,
-              summary: data.currently.summary,
-              humidity: data.currently.humidity,
-              icon: data.currently.icon,
-              precipProbability: data.currently.precipProbability,
-              precipType: data.currently.precipType,
-              visibility: data.currently.visibility,
-              windSpeed: data.currently.windSpeed,
-            });
-          });
+  function fetchWeather(lat, long) {
+    const api = `/.netlify/functions/weatherGeo?lat=${lat}&long=${long}`;
+    const apiRegion = `/.netlify/functions/weatherGeo?region=true`;
+    console.log('function called...');
+    fetch(!lat ? apiRegion : api)
+      .then(res => res.json())
+      .then(data => {
+        console.log('Data:', data);
+        setWeather(data);
+        setLS('weatherData', data);
+        setLS('lastCached', Date.now());
       });
-    }
   }
 
-  render() {
-    if (!this.state.isLoading) {
-      return (
-        <div className="loading">
-          <div className="card">
-            <h1>Weather Forecast</h1>
-            <h2>Allow location to access.</h2>
-          </div>
-        </div>
-      );
+  useEffect(() => {
+    if (!getLS('weatherData')) {
+      fetchWeather();
     }
-    return <Weather props={this.state} />;
-  }
+    const timeSinceLastFetch = Date.now() - getLS('lastCached');
+    if (timeSinceLastFetch >= 5 * 60000) {
+      if (getLS('lastCords')) {
+        const { lat, long } = getLS('lastCords');
+        fetchWeather(lat, long);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const strings = ['clear-night', 'partly-cloudy-night', 'thunderstorm'];
+    if (weather && strings.includes(weather.weatherData.currently.icon)) {
+      console.log('its dark time');
+      setTheme(themes.dark);
+    } else {
+      console.log('its light time');
+      setTheme(themes.light);
+    }
+  }, [weather]);
+
+  return weather ? (
+    <GlobalState.Provider
+      value={{ theme, weather, setWeather, isFern, setIsFern }}>
+      <Weather />
+    </GlobalState.Provider>
+  ) : (
+    <div className="loading">
+      <div className="card">
+        <h1>Weather Forecast</h1>
+        <h2>Allow location to access.</h2>
+      </div>
+    </div>
+  );
 }
