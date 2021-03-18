@@ -40,6 +40,9 @@ export default function Weather() {
           </p>
         </div>
       </div>
+      <div className="summery-container">
+        <h2>{currently.summary}</h2>
+      </div>
       <div className="chart-container">
         <Chart />
       </div>
@@ -68,9 +71,6 @@ export default function Weather() {
       </div>
       <div className="icon-container">
         <div className={`weather-icon ${currently.icon}`} />
-      </div>
-      <div className="summery-container">
-        <h2>{currently.summary}</h2>
       </div>
     </div>
   );

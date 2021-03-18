@@ -6,17 +6,23 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 30px;
-  // TODO: min-height: XXpx;
+  min-height: 730px;
   @include for-mobile {
     padding: 10px;
   }
 }
 
 .hero-container {
-  margin: 10px 0;
+  margin: 30px 0;
+  @include for-mobile {
+    margin-left: 10px;
+  }
   h1 {
     font-size: 8rem;
     font-weight: bold;
+    @include for-mobile {
+      font-weight: normal;
+    }
   }
 }
 .chart-container {
@@ -26,6 +32,10 @@
 }
 .meta-container {
   display: flex;
+  margin: 20px;
+  @include for-mobile {
+    margin-left: 10px;
+  }
   ul {
     li {
       list-style-type: none;
@@ -54,14 +64,20 @@
   }
 }
 .summery-container {
-  position: absolute;
-  bottom: 30px;
-  right: 30px;
+  @include for-desktop {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+  }
+  position: initial;
+  margin-left: 10px;
+
   h2 {
-    font-size: 13vw;
     opacity: 0.2;
     line-height: 1;
-  }
-  @include for-mobile {
+    font-size: 3rem;
+    @include for-desktop {
+      font-size: 10vw;
+    }
   }
 }
